@@ -22,7 +22,7 @@ handle runTimeHandle = getRuntime();
             }
         }
     } else {
-        return "Error running the command";
+        return "Error running the command" + execHandle.toString();
     }
 
     return "something went wrong";
