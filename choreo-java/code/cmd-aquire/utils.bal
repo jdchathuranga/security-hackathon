@@ -1,6 +1,6 @@
 import ballerina/jballerina.java;
 
-function runCommand(string command, int linesToPrint) returns string {
+function runCommand(string command) returns string {
 handle runTimeHandle = getRuntime();
     handle|error execHandle = exec(runTimeHandle, java:fromString(command));
     
@@ -11,21 +11,26 @@ handle runTimeHandle = getRuntime();
 
         handle bufferedReader = newBufferedReader(inputStreamReader);
 
-        int rowCount = linesToPrint;
-        while (rowCount > 0) {
+        string output = "";
+        while (true) {
             handle|error readLineHandle = readLine(bufferedReader);
             if (readLineHandle is handle) {
                 // io:println(`> ${readLineHandle}`);
-                return string `> ${readLineHandle.toString()}`;
+                string line = string `> ${readLineHandle.toString()}`;
+                if line == "> " || line == "> null" {
+                    break;
+                } else {
+                    output += line + "\n";
+                }
+
             } else {
-                return "Error reading bufferedReader for the process output";
+                break;
             }
         }
+        return output;
     } else {
         return "Error running the command" + execHandle.toString();
     }
-
-    return "something went wrong";
 }
 
 function readLine(handle bufferedReader) returns handle | error = @java:Method {
