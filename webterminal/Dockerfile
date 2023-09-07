@@ -1,0 +1,1 @@
+FROM raonigabriel/web-terminal:latest
